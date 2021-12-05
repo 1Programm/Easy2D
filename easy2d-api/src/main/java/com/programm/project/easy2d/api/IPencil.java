@@ -17,4 +17,6 @@ public interface IPencil {
 
     void drawImage(BufferedImage img, float x, float y, float width, float height);
 
+    void fillScreen();
+
 }
