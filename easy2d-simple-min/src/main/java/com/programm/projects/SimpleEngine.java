@@ -1,3 +1,5 @@
+package com.programm.projects;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
