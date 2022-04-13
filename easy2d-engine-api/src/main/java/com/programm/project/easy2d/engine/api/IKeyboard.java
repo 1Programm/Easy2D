@@ -1,10 +1,14 @@
 package com.programm.project.easy2d.engine.api;
 
 import java.awt.event.KeyEvent;
+import java.util.function.Consumer;
 
 public interface IKeyboard {
 
     boolean isKeyPressed(int keyCode);
+
+    void onKeyPressed(Consumer<Integer> consumer);
+    void onKeyReleased(Consumer<Integer> consumer);
 
     default boolean A(){
         return isKeyPressed(KeyEvent.VK_A);

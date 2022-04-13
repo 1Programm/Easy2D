@@ -9,4 +9,7 @@ public interface IMouse {
     boolean midPressed();
     boolean rightPressed();
 
+    void onMousePressed(Runnable runnable);
+    void onMouseReleased(Runnable runnable);
+
 }
