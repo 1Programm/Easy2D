@@ -6,7 +6,7 @@ import com.programm.project.easy2d.engine.api.IPencil;
 
 import java.awt.*;
 
-public class TestMain extends SimpleEngine {
+class TestMain extends SimpleEngine {
 
     private static final ILogger log = new ConsoleLogger(ConsoleLogger.INFO);
 
