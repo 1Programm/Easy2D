@@ -8,6 +8,4 @@ public interface IEngine {
 
     void render(IPencil pencil);
 
-    ILogger logger();
-
 }

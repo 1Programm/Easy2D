@@ -1,10 +1,10 @@
 package com.programm.projects.easy2d.engine.simple;
 
-import com.programm.project.easy2d.engine.api.ILogger;
-import com.programm.project.easy2d.engine.api.IMouse;
+import com.programm.project.easy2d.engine.api.*;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,8 +14,11 @@ public class SimpleMouse extends MouseAdapter implements IMouse {
     private float x, y;
     private boolean left, mid, right;
 
-    private final List<Runnable> mousePressedListeners = new ArrayList<>();
-    private final List<Runnable> mouseReleasedListeners = new ArrayList<>();
+    private final List<IMouseListener> mousePressedListeners = new ArrayList<>();
+    private final List<IMouseListener> mouseReleasedListeners = new ArrayList<>();
+    private final List<IMouseMoveListener> mouseMovedListeners = new ArrayList<>();
+    private final List<IMouseDragListener> mouseDraggedListeners = new ArrayList<>();
+    private final List<IMouseScrollListener> mouseScrolledListeners = new ArrayList<>();
 
     public SimpleMouse(ILogger logger) {
         this.logger = logger;
@@ -23,32 +26,54 @@ public class SimpleMouse extends MouseAdapter implements IMouse {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        setButton(e.getButton(), true);
+        int btn = e.getButton();
+        setButton(btn, true);
 
-        for(int i=0;i<mousePressedListeners.size();i++){
-            mousePressedListeners.get(i).run();
-        }
+        notify(mousePressedListeners, btn);
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        setButton(e.getButton(), false);
+        int btn = e.getButton();
+        setButton(btn, false);
 
-        for(int i=0;i<mouseReleasedListeners.size();i++){
-            mouseReleasedListeners.get(i).run();
-        }
+        notify(mouseReleasedListeners, btn);
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
         x = e.getX();
         y = e.getY();
+
+        notify(mouseDraggedListeners, e.getButton());
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
         x = e.getX();
         y = e.getY();
+
+        notify(mouseMovedListeners);
+    }
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        for(int i=0;i<mouseScrolledListeners.size();i++){
+            //X scroll is not supported in java swing
+            mouseScrolledListeners.get(i).action(this, 0, e.getScrollAmount() * e.getUnitsToScroll());
+        }
+    }
+
+    private <T extends IMouseListener> void notify(List<T> list, int button){
+        for(int i=0;i<list.size();i++){
+            list.get(i).action(this, button);
+        }
+    }
+
+    private void notify(List<IMouseMoveListener> list){
+        for(int i=0;i<list.size();i++){
+            list.get(i).action(this);
+        }
     }
 
     private void setButton(int btn, boolean state){
@@ -92,12 +117,32 @@ public class SimpleMouse extends MouseAdapter implements IMouse {
     }
 
     @Override
-    public void onMousePressed(Runnable runnable) {
-        this.mousePressedListeners.add(runnable);
+    public Subscription onMousePressed(IMouseListener listener) {
+        mousePressedListeners.add(listener);
+        return new SubscriptionImpl(mousePressedListeners, listener);
     }
 
     @Override
-    public void onMouseReleased(Runnable runnable) {
-        this.mouseReleasedListeners.add(runnable);
+    public Subscription onMouseReleased(IMouseListener listener) {
+        mouseReleasedListeners.add(listener);
+        return new SubscriptionImpl(mouseReleasedListeners, listener);
+    }
+
+    @Override
+    public Subscription onMouseMoved(IMouseMoveListener listener) {
+        mouseMovedListeners.add(listener);
+        return new SubscriptionImpl(mouseMovedListeners, listener);
+    }
+
+    @Override
+    public Subscription onMouseDragged(IMouseDragListener listener) {
+        mouseDraggedListeners.add(listener);
+        return new SubscriptionImpl(mouseDraggedListeners, listener);
+    }
+
+    @Override
+    public Subscription onMouseScrolled(IMouseScrollListener listener) {
+        mouseScrolledListeners.add(listener);
+        return new SubscriptionImpl(mouseScrolledListeners, listener);
     }
 }

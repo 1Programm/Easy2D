@@ -223,6 +223,18 @@ public abstract class SimpleEngine {
 
         void fillRectangle(float x, float y, float width, float height);
 
+        void drawRoundRectangle(float x, float y, float width, float height, float edge);
+
+        void fillRoundRectangle(float x, float y, float width, float height, float edge);
+
+        void drawCircle(float x, float y, float radius);
+
+        void fillCircle(float x, float y, float radius);
+
+        void drawOval(float x, float y, float width, float height);
+
+        void fillOval(float x, float y, float width, float height);
+
         void drawImage(BufferedImage img, float x, float y, float width, float height);
 
         void fillScreen();
@@ -327,6 +339,38 @@ public abstract class SimpleEngine {
         }
 
         @Override
+        public void drawRoundRectangle(float x, float y, float width, float height, float edge) {
+            g.drawRoundRect((int)x, (int)y, (int)width, (int)height, (int)edge, (int)edge);
+        }
+
+        @Override
+        public void fillRoundRectangle(float x, float y, float width, float height, float edge) {
+            g.fillRoundRect((int)x, (int)y, (int)width, (int)height, (int)edge, (int)edge);
+        }
+
+        @Override
+        public void drawCircle(float x, float y, float radius) {
+            float dia = radius * 2;
+            g.drawOval((int)(x - radius), (int)(y - radius), (int)dia, (int)dia);
+        }
+
+        @Override
+        public void fillCircle(float x, float y, float radius) {
+            float dia = radius * 2;
+            g.fillOval((int)(x - radius), (int)(y - radius), (int)dia, (int)dia);
+        }
+
+        @Override
+        public void drawOval(float x, float y, float width, float height) {
+            g.drawOval((int)x, (int)y, (int)width, (int)height);
+        }
+
+        @Override
+        public void fillOval(float x, float y, float width, float height) {
+            g.fillOval((int)x, (int)y, (int)width, (int)height);
+        }
+
+        @Override
         public void drawImage(BufferedImage img, float x, float y, float width, float height) {
             g.drawImage(img, (int)x, (int)y, (int)width, (int)height, null);
         }
@@ -343,7 +387,6 @@ public abstract class SimpleEngine {
     }
 
     private class SimpleKeyboard extends KeyAdapter implements IKeyboard {
-
         private static final int NUM_KEYS = KeyEvent.KEY_LAST + 1;
         private final boolean[] keys = new boolean[NUM_KEYS];
 
@@ -378,7 +421,6 @@ public abstract class SimpleEngine {
     }
 
     private class SimpleMouse extends MouseAdapter implements IMouse {
-
         private float x, y;
         private boolean left, mid, right;
 

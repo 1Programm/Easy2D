@@ -9,7 +9,12 @@ public interface IMouse {
     boolean midPressed();
     boolean rightPressed();
 
-    void onMousePressed(Runnable runnable);
-    void onMouseReleased(Runnable runnable);
+    Subscription onMousePressed(IMouseListener listener);
+    Subscription onMouseReleased(IMouseListener listener);
+
+    Subscription onMouseMoved(IMouseMoveListener listener);
+    Subscription onMouseDragged(IMouseDragListener listener);
+
+    Subscription onMouseScrolled(IMouseScrollListener listener);
 
 }

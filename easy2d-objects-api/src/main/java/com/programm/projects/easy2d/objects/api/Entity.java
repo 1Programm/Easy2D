@@ -21,13 +21,15 @@ public abstract class Entity extends GameObject {
 
     @Override
     public void update(IObjectContext ctx) {
-        this.pos.add(velocity);
+        if(velocity.getX() != 0 || velocity.getY() != 0) {
+            this.pos.add(velocity);
 
-        ICollisionInfo info = ctx.objects().checkCollision(this);
+            ICollisionInfo info = ctx.objects().checkCollision(this);
 
-        if(info != null){
-            Vector2f resolution = info.resolutionVector();
-            this.pos.add(resolution);
+            if (info != null) {
+                Vector2f resolution = info.resolutionVector();
+                this.pos.add(resolution);
+            }
         }
     }
 

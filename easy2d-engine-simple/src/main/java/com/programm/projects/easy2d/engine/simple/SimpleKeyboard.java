@@ -1,13 +1,14 @@
 package com.programm.projects.easy2d.engine.simple;
 
+import com.programm.project.easy2d.engine.api.IKeyListener;
 import com.programm.project.easy2d.engine.api.IKeyboard;
 import com.programm.project.easy2d.engine.api.ILogger;
+import com.programm.project.easy2d.engine.api.Subscription;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class SimpleKeyboard extends KeyAdapter implements IKeyboard {
 
@@ -15,8 +16,8 @@ public class SimpleKeyboard extends KeyAdapter implements IKeyboard {
     private final boolean[] keys = new boolean[NUM_KEYS];
     private final ILogger logger;
 
-    private final List<Consumer<Integer>> keyPressedListeners = new ArrayList<>();
-    private final List<Consumer<Integer>> keyReleasedListeners = new ArrayList<>();
+    private final List<IKeyListener> keyPressedListeners = new ArrayList<>();
+    private final List<IKeyListener> keyReleasedListeners = new ArrayList<>();
 
     public SimpleKeyboard(ILogger logger) {
         this.logger = logger;
@@ -34,7 +35,7 @@ public class SimpleKeyboard extends KeyAdapter implements IKeyboard {
         setKey(keyCode, true);
 
         for(int i=0;i<keyPressedListeners.size();i++){
-            keyPressedListeners.get(i).accept(keyCode);
+            keyPressedListeners.get(i).action(this, keyCode);
         }
     }
 
@@ -44,7 +45,7 @@ public class SimpleKeyboard extends KeyAdapter implements IKeyboard {
         setKey(keyCode, false);
 
         for(int i=0;i<keyReleasedListeners.size();i++){
-            keyReleasedListeners.get(i).accept(keyCode);
+            keyReleasedListeners.get(i).action(this, keyCode);
         }
     }
 
@@ -62,12 +63,14 @@ public class SimpleKeyboard extends KeyAdapter implements IKeyboard {
     }
 
     @Override
-    public void onKeyPressed(Consumer<Integer> consumer) {
-        keyPressedListeners.add(consumer);
+    public Subscription onKeyPressed(IKeyListener listener) {
+        keyPressedListeners.add(listener);
+        return new SubscriptionImpl(keyPressedListeners, listener);
     }
 
     @Override
-    public void onKeyReleased(Consumer<Integer> consumer) {
-        keyReleasedListeners.add(consumer);
+    public Subscription onKeyReleased(IKeyListener listener) {
+        keyReleasedListeners.add(listener);
+        return new SubscriptionImpl(keyReleasedListeners, listener);
     }
 }

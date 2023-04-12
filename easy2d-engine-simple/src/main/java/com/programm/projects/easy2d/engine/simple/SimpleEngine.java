@@ -2,25 +2,24 @@ package com.programm.projects.easy2d.engine.simple;
 
 import com.programm.project.easy2d.engine.api.*;
 
-public abstract class SimpleEngine implements IEngine {
+public abstract class SimpleEngine implements IEngine, IContext {
 
-    private final SimpleWindow window;
+    private final IWindow window;
     private final ProxyLogger logger;
-    protected final IKeyboard keyboard;
-    protected final IMouse mouse;
+    protected final SimpleKeyboard keyboard;
+    protected final SimpleMouse mouse;
     private final float fps;
     private boolean printFps = false;
     private boolean running = false;
 
     public SimpleEngine(String title, int width, int height, float fps) {
         this.logger = new ProxyLogger();
-        SimpleKeyboard simpleKeyboard = new SimpleKeyboard(logger);
-        SimpleMouse simpleMouse = new SimpleMouse(logger);
-        this.window = new SimpleWindow(title, width, height, this::render, simpleKeyboard, simpleMouse);
-        this.fps = fps;
 
-        this.keyboard = simpleKeyboard;
-        this.mouse = simpleMouse;
+        this.keyboard = new SimpleKeyboard(logger);
+        this.mouse = new SimpleMouse(logger);
+        this.window = initWindow(title, width, height);
+        this.window.init(this, keyboard, mouse);
+        this.fps = fps;
     }
 
     public final void start() {
@@ -37,9 +36,13 @@ public abstract class SimpleEngine implements IEngine {
         running = false;
     }
 
+    protected IWindow initWindow(String title, int width, int height){
+        return new SimpleWindow(title, width, height);
+    }
+
     protected abstract void init();
 
-    protected void onShutdown(){ }
+    protected void onShutdown(){}
 
     private void run(){
         init();
@@ -93,7 +96,7 @@ public abstract class SimpleEngine implements IEngine {
     }
 
     @Override
-    public final ILogger logger() {
+    public final ILogger log() {
         return logger;
     }
 
@@ -101,4 +104,18 @@ public abstract class SimpleEngine implements IEngine {
         this.printFps = true;
     }
 
+    @Override
+    public final IWindow window() {
+        return window;
+    }
+
+    @Override
+    public final IMouse mouse() {
+        return mouse;
+    }
+
+    @Override
+    public final IKeyboard keyboard() {
+        return keyboard;
+    }
 }

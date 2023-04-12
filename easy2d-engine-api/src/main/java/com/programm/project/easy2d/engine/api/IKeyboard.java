@@ -1,14 +1,13 @@
 package com.programm.project.easy2d.engine.api;
 
 import java.awt.event.KeyEvent;
-import java.util.function.Consumer;
 
 public interface IKeyboard {
 
     boolean isKeyPressed(int keyCode);
 
-    void onKeyPressed(Consumer<Integer> consumer);
-    void onKeyReleased(Consumer<Integer> consumer);
+    Subscription onKeyPressed(IKeyListener listener);
+    Subscription onKeyReleased(IKeyListener listener);
 
     default boolean A(){
         return isKeyPressed(KeyEvent.VK_A);
@@ -156,6 +155,10 @@ public interface IKeyboard {
 
     default boolean ENTER(){
         return isKeyPressed(KeyEvent.VK_ENTER);
+    }
+
+    default boolean SHIFT() {
+        return isKeyPressed(KeyEvent.VK_SHIFT);
     }
 
     default boolean SPACE(){
