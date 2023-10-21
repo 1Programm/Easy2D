@@ -29,9 +29,9 @@ public abstract class UIElement {
 
         mouse.onMousePressed((m, btn) -> onMousePressed(m.x(), m.y(), btn));
         mouse.onMouseReleased((m, btn) -> onMouseReleased(m.x(), m.y(), btn));
-        mouse.onMouseMoved((m, btn) -> onMouseMoved(m.x(), m.y()));
+        mouse.onMouseMoved((m) -> onMouseMoved(m.x(), m.y()));
         mouse.onMouseDragged((m, btn) -> onMouseDragged(m.x(), m.y()));
-        mouse.onMouseScrolled((m, scroll) -> onMouseScrolled(scroll));
+        mouse.onMouseScrolled((m, scrollV, scrollH) -> onMouseScrolled(scrollV));
 
         keyboard.onKeyPressed((k, key) -> onKeyPressed(key));
         keyboard.onKeyReleased((k, key) -> onKeyReleased(key));

@@ -1,13 +1,13 @@
 package com.programm.projects.easy2d.objects.api;
 
-import com.programm.project.easy2d.engine.api.IKeyboard;
-import com.programm.project.easy2d.engine.api.IMouse;
+import com.programm.project.easy2d.engine.api.IContext;
 
 public interface IObjectContext {
 
-    IKeyboard keyboard();
-    IMouse mouse();
+    GameObject gameObject();
 
-    IObjectCollection objects();
+    IGOH objectHandler();
+
+    IContext engine();
 
 }

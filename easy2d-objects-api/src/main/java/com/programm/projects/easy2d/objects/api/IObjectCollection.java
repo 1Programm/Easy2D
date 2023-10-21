@@ -4,18 +4,16 @@ import com.programm.projects.plus.maths.Vector2f;
 
 import java.util.Iterator;
 
-public interface IObjectCollection extends Iterable<IGameObject> {
+public interface IObjectCollection extends ICollisionTester, Iterable<GameObject> {
 
     int size();
-    IGameObject get(int i);
+    GameObject get(int i);
     void remove(int i);
 
     IObjectCollection getNearbys(Vector2f pos, float range);
 
-    ICollisionInfo checkCollision(IShape s);
-
     @Override
-    default Iterator<IGameObject> iterator() {
+    default Iterator<GameObject> iterator() {
         return new Iterator<>() {
             private final int savedSize = size();
             private int i = 0;
@@ -26,7 +24,7 @@ public interface IObjectCollection extends Iterable<IGameObject> {
             }
 
             @Override
-            public IGameObject next() {
+            public GameObject next() {
                 return get(i++);
             }
         };

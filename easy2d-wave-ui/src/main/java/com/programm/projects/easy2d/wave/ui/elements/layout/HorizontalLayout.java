@@ -251,6 +251,8 @@ public class HorizontalLayout extends AbstractPolicyLayout {
             if(minWidth != null) {
                 allMinWidth += minWidth;
             }
+
+            if(i + 1 < children.size()) allMinWidth += padding;
         }
 
         return allMinWidth;

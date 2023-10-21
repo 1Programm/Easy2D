@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>easy2d-objects-api</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.4.0</version>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -21,12 +21,13 @@
         <dependency>
             <groupId>com.programm.projects</groupId>
             <artifactId>easy2d-engine-api</artifactId>
-            <version>0.4-SNAPSHOT</version>
+            <version>0.7.0</version>
         </dependency>
+
         <dependency>
             <groupId>com.programm.projects</groupId>
             <artifactId>plus-maths</artifactId>
-            <version>1.4</version>
+            <version>1.5</version>
         </dependency>
     </dependencies>
 

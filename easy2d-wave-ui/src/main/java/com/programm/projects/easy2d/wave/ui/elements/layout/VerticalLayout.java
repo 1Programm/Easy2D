@@ -14,7 +14,7 @@ public class VerticalLayout extends AbstractPolicyLayout {
 
     public VerticalLayout() {
         super();
-        this.padding = 0;
+        this.padding = 2;
     }
 
     public VerticalLayout(int horizontalPolicy, int verticalPolicy) {
@@ -267,6 +267,8 @@ public class VerticalLayout extends AbstractPolicyLayout {
             if(minHeight != null) {
                 allMinHeight += minHeight;
             }
+
+            if(i + 1 < children.size()) allMinHeight += padding;
         }
 
         return allMinHeight;

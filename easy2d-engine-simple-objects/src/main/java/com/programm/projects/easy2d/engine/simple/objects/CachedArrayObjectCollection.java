@@ -1,6 +1,5 @@
 package com.programm.projects.easy2d.engine.simple.objects;
 
-import com.programm.projects.easy2d.objects.api.*;
 import com.programm.projects.plus.maths.Vector2f;
 
 import java.util.ArrayList;
@@ -48,8 +47,4 @@ public class CachedArrayObjectCollection extends ArrayObjectCollection {
         cacheMap[y][x] = index;
     }
 
-    @Override
-    public ICollisionInfo checkCollision(IShape s) {
-        return super.checkCollision(s);
-    }
 }
