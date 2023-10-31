@@ -15,7 +15,6 @@
         <module>easy2d-engine-simple-objects</module>
         <module>easy2d-objects-api</module>
         <module>easy2d-simple-ui</module>
-        <module>easy2d-advanced-ui</module>
         <module>easy2d-wave-ui</module>
         <module>easy2d-tests</module>
     </modules>
