@@ -28,10 +28,10 @@ public abstract class AbstractTextComponent extends WaveComponent implements ITe
     protected Float minWidth, minHeight;
 
     public AbstractTextComponent() {
-        text.listen(this::requestRecalculate);
-        textColor.listen(this::requestRedraw);
-        fontSize.listen(this::requestRecalculate);
-        textAlign.listen(this::requestRedraw);
+        text.recalculate(this);
+        textColor.redraw(this);
+        fontSize.recalculate(this);
+        textAlign.redraw(this);
     }
 
     public AbstractTextComponent(String text) {

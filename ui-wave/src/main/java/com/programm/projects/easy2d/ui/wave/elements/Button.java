@@ -57,8 +57,10 @@ public class Button extends Label {
     public Button(String text) {
         super(text);
 
-        pressedColor.listen(this::requestRedraw);
-        hoveredColor.listen(this::requestRedraw);
+        pressedColor.redraw(this);
+        hoveredColor.redraw(this);
+        pressed.redraw(this);
+        hovered.redraw(this);
     }
 
     public Button() {

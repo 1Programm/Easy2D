@@ -36,11 +36,11 @@ public abstract class WaveComponent implements IEditableBounds, IWaveComponent {
     private final UIBoolProperty disabled = new UIBoolProperty(getClass(), "disabled");
 
     public WaveComponent() {
-        primary.listen(this::requestRedraw);
-        secondary.listen(this::requestRedraw);
-        disabledColor.listen(this::requestRedraw);
-        visible.listen(this::requestRecalculate);
-        disabledColor.listen(this::requestRedraw);
+        primary.redraw(this);
+        secondary.redraw(this);
+        disabledColor.redraw(this);
+        visible.recalculate(this);
+        disabled.redraw(this);
 
         GlobalWaveDefaults.initDefaults(this.getClass(), this);
     }

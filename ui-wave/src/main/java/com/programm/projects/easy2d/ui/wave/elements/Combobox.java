@@ -99,9 +99,10 @@ public class Combobox<T> extends AbstractTextComponent {
         this.items = items;
         this.itemRenderBounds = initRenderBounds(items.size());
 
-        this.selectedIndex.listen(this::requestRedraw);
-        this.itemRenderer.listen(this::requestRedraw);
-        this.itemsExpanded.listen(this::requestRecalculate);
+        this.selectedIndex.redraw(this);
+        this.hoveredIndex.redraw(this);
+        this.itemRenderer.redraw(this);//TODO: maybe let the renderer control some size stuff
+        this.itemsExpanded.recalculate(this);
 
         this.selectedIndex.listen(this::updateTextForSelectedItem);
 

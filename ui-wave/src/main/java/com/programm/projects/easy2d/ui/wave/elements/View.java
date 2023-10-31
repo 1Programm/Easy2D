@@ -72,9 +72,19 @@ public class View extends WaveComponent {
 
     public View(ILayout layout) {
         this.layout = layout;
+        init();
     }
 
-    public View() {}
+    public View() {
+        init();
+    }
+
+    private void init(){
+        marginTop.recalculate(this);
+        marginLeft.recalculate(this);
+        marginBottom.recalculate(this);
+        marginRight.recalculate(this);
+    }
 
     @Override
     public void render(IBounds bounds, IPencil pen, boolean forceRedraw) {

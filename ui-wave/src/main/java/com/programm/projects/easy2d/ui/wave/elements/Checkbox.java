@@ -54,6 +54,10 @@ public class Checkbox extends WaveComponent {
 
     private final UIBoolProperty checked = new UIBoolProperty(getClass(), "checked");
 
+    public Checkbox() {
+        checked.redraw(this);
+    }
+
     @Override
     public Float minWidth(IPencil pen) {
         return 16f;
