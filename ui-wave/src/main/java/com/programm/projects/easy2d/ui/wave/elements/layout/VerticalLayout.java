@@ -209,6 +209,7 @@ public class VerticalLayout extends AbstractPolicyLayout {
         float width = 0;
         switch(horizontalPolicy){
             case POLICY_INITIAL:
+            case POLICY_SPREAD:
                 width = GlobalComponentUtils.getWidthConstrainedByMinMax(pen, child);//child.width();
                 break;
             case POLICY_STRETCH:

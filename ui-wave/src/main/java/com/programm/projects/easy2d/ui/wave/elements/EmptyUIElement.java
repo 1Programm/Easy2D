@@ -1,6 +1,7 @@
 package com.programm.projects.easy2d.ui.wave.elements;
 
 import com.programm.projects.easy2d.engine.api.IPencil;
+import com.programm.projects.easy2d.ui.wave.core.GlobalComponentUtils;
 import com.programm.projects.easy2d.ui.wave.core.GlobalWaveDefaults;
 import com.programm.projects.easy2d.ui.wave.core.WaveComponent;
 import com.programm.projects.easy2d.ui.wave.core.bounds.IBounds;
@@ -20,6 +21,7 @@ public class EmptyUIElement extends WaveComponent {
     @Override
     public void render(IBounds bounds, IPencil pen, boolean forceRedraw) {
         this.bounds = bounds;
+        GlobalComponentUtils.setDirty(this, false);
     }
 
     public IBounds getDrawnBounds(){
