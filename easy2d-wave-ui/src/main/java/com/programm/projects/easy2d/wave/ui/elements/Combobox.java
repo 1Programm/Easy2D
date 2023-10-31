@@ -6,6 +6,7 @@ import com.programm.libraries.reactiveproperties.core.IntProperty;
 import com.programm.libraries.reactiveproperties.core.ObjectProperty;
 import com.programm.project.easy2d.engine.api.IMouse;
 import com.programm.project.easy2d.engine.api.IPencil;
+import com.programm.projects.easy2d.wave.ui.core.GlobalComponentUtils;
 import com.programm.projects.easy2d.wave.ui.core.GlobalWaveDefaults;
 import com.programm.projects.easy2d.wave.ui.core.IWaveComponent;
 import com.programm.projects.easy2d.wave.ui.core.IWaveComponentRenderer;
@@ -48,7 +49,7 @@ public class Combobox<T> extends AbstractTextComponent {
             ITextComponent renderer = c.itemRenderer().get();
             if(c.itemsExpanded.get() && renderer != null){
                 float curY = bounds.y() + bounds.height();
-                float itemHeight = c.minHeight(pen);
+                float itemHeight = GlobalComponentUtils.getHeightOrMinHeight(pen, c);//c.minHeight(pen);
                 float itemX = bounds.x();
                 float itemWidth = bounds.width();
 
@@ -102,17 +103,7 @@ public class Combobox<T> extends AbstractTextComponent {
         this.itemRenderer.listen(this::requestRedraw);
         this.itemsExpanded.listen(this::requestRecalculate);
 
-        this.selectedIndex.listen(() -> {
-            T item = selectedItem();
-            String _item;
-            if(item == null){
-                _item = "";
-            }
-            else {
-                _item = Objects.toString(item);
-            }
-            text().set(_item);
-        });
+        this.selectedIndex.listen(this::updateTextForSelectedItem);
 
         this.selectedIndex.set(selectedIndex);
     }
@@ -127,6 +118,18 @@ public class Combobox<T> extends AbstractTextComponent {
 
     public Combobox() {
         this(new ArrayList<>(), -1);
+    }
+
+    private void updateTextForSelectedItem(){
+        T item = selectedItem();
+        String _item;
+        if(item == null){
+            _item = "";
+        }
+        else {
+            _item = Objects.toString(item);
+        }
+        text().set(_item);
     }
 
     private List<IEditableBounds> initRenderBounds(int size){
@@ -172,6 +175,8 @@ public class Combobox<T> extends AbstractTextComponent {
 
     @Override
     public void onMousePressed(IBounds bounds, IMouse mouse, int button) {
+        if(disabled().get()) return;
+
         if(itemsExpanded.get()){
             for(int i=0;i<items.size();i++){
                 IBounds renderBounds = itemRenderBounds.get(i);
@@ -203,6 +208,8 @@ public class Combobox<T> extends AbstractTextComponent {
 
     @Override
     public void onMouseMoved(IBounds bounds, IMouse mouse) {
+        if(disabled().get()) return;
+
         if(itemsExpanded.get()){
             hoveredIndex.set(-1);
             for(int i=0;i<items.size();i++){

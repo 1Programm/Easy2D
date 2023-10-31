@@ -36,7 +36,7 @@ public class InheritLayout implements ILayout {
         for(int i=0;i<children.size();i++){
             WaveComponent child = children.get(i);
             if(!child.visible().get()) continue;
-            Float minWidth = child.minWidth(pen);
+            Float minWidth = GlobalComponentUtils.getWidthOrMinWidth(pen, child);//child.minWidth(pen);
             if(maxMinWidth == null || (minWidth != null && maxMinWidth < minWidth)){
                 maxMinWidth = minWidth;
             }
@@ -52,7 +52,7 @@ public class InheritLayout implements ILayout {
         for(int i=0;i<children.size();i++){
             WaveComponent child = children.get(i);
             if(!child.visible().get()) continue;
-            Float minHeight = child.minHeight(pen);
+            Float minHeight = GlobalComponentUtils.getHeightOrMinHeight(pen, child);//child.minHeight(pen);
             if(maxMinHeight == null || (minHeight != null && maxMinHeight < minHeight)){
                 maxMinHeight = minHeight;
             }

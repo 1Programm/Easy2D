@@ -119,30 +119,30 @@ public class SimpleMouse extends MouseAdapter implements IMouse {
     @Override
     public Subscription onMousePressed(IMouseListener listener) {
         mousePressedListeners.add(listener);
-        return new SubscriptionImpl(mousePressedListeners, listener);
+        return new SimpleListSubscription(mousePressedListeners, listener);
     }
 
     @Override
     public Subscription onMouseReleased(IMouseListener listener) {
         mouseReleasedListeners.add(listener);
-        return new SubscriptionImpl(mouseReleasedListeners, listener);
+        return new SimpleListSubscription(mouseReleasedListeners, listener);
     }
 
     @Override
     public Subscription onMouseMoved(IMouseMoveListener listener) {
         mouseMovedListeners.add(listener);
-        return new SubscriptionImpl(mouseMovedListeners, listener);
+        return new SimpleListSubscription(mouseMovedListeners, listener);
     }
 
     @Override
     public Subscription onMouseDragged(IMouseDragListener listener) {
         mouseDraggedListeners.add(listener);
-        return new SubscriptionImpl(mouseDraggedListeners, listener);
+        return new SimpleListSubscription(mouseDraggedListeners, listener);
     }
 
     @Override
     public Subscription onMouseScrolled(IMouseScrollListener listener) {
         mouseScrolledListeners.add(listener);
-        return new SubscriptionImpl(mouseScrolledListeners, listener);
+        return new SimpleListSubscription(mouseScrolledListeners, listener);
     }
 }

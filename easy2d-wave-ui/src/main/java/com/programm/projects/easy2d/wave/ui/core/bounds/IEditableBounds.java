@@ -2,34 +2,37 @@ package com.programm.projects.easy2d.wave.ui.core.bounds;
 
 public interface IEditableBounds extends IBounds {
 
-    void x(float x);
+    IEditableBounds x(float x);
 
-    void y(float y);
+    IEditableBounds y(float y);
 
-    void width(float width);
+    IEditableBounds width(float width);
 
-    void height(float height);
+    IEditableBounds height(float height);
 
 
-    default void position(float x, float y){
+    default IEditableBounds position(float x, float y){
         x(x);
         y(y);
+        return this;
     }
 
-    default void size(float width, float height){
+    default IEditableBounds size(float width, float height){
         width(width);
         height(height);
+        return this;
     }
 
-    default void bounds(float x, float y, float width, float height){
+    default IEditableBounds bounds(float x, float y, float width, float height){
         x(x);
         y(y);
         width(width);
         height(height);
+        return this;
     }
 
-    default void bounds(IBounds bounds){
-        bounds(bounds.x(), bounds.y(), bounds.width(), bounds.height());
+    default IEditableBounds bounds(IBounds bounds){
+        return bounds(bounds.x(), bounds.y(), bounds.width(), bounds.height());
     }
 
 }

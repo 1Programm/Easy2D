@@ -87,5 +87,15 @@ public class GlobalComponentUtils {
         return getHeightConstrainedByMinMax(pen, component, component.height());
     }
 
+    public static Float getWidthOrMinWidth(IPencil pen, WaveComponent component){
+        if(widthUntouched(component)) return component.minWidth(pen);
+        return component.width();
+    }
+
+    public static Float getHeightOrMinHeight(IPencil pen, WaveComponent component){
+        if(heightUntouched(component)) return component.minHeight(pen);
+        return component.height();
+    }
+
     private GlobalComponentUtils(){}
 }

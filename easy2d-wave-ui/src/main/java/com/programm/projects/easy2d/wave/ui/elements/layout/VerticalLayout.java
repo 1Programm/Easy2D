@@ -247,7 +247,8 @@ public class VerticalLayout extends AbstractPolicyLayout {
         for(int i=0;i<children.size();i++){
             WaveComponent child = children.get(i);
             if(!child.visible().get()) continue;
-            Float minWidth = child.minWidth(pen);
+//            Float minWidth = child.minWidth(pen);
+            Float minWidth = GlobalComponentUtils.getWidthOrMinWidth(pen, child);
             if(maxMinWidth == null || (minWidth != null && maxMinWidth < minWidth)){
                 maxMinWidth = minWidth;
             }
@@ -263,7 +264,8 @@ public class VerticalLayout extends AbstractPolicyLayout {
         for(int i=0;i<children.size();i++){
             WaveComponent child = children.get(i);
             if(!child.visible().get()) continue;
-            Float minHeight = child.minHeight(pen);
+//            Float minHeight = child.minHeight(pen);
+            Float minHeight = GlobalComponentUtils.getHeightOrMinHeight(pen, child);
             if(minHeight != null) {
                 allMinHeight += minHeight;
             }
@@ -274,8 +276,9 @@ public class VerticalLayout extends AbstractPolicyLayout {
         return allMinHeight;
     }
 
-    public void padding(float padding){
+    public VerticalLayout padding(float padding){
         this.padding = padding;
+        return this;
     }
 
     public float padding(){

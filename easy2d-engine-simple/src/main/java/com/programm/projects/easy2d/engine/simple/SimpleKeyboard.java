@@ -1,9 +1,6 @@
 package com.programm.projects.easy2d.engine.simple;
 
-import com.programm.project.easy2d.engine.api.IKeyListener;
-import com.programm.project.easy2d.engine.api.IKeyboard;
-import com.programm.project.easy2d.engine.api.ILogger;
-import com.programm.project.easy2d.engine.api.Subscription;
+import com.programm.project.easy2d.engine.api.*;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -65,12 +62,12 @@ public class SimpleKeyboard extends KeyAdapter implements IKeyboard {
     @Override
     public Subscription onKeyPressed(IKeyListener listener) {
         keyPressedListeners.add(listener);
-        return new SubscriptionImpl(keyPressedListeners, listener);
+        return new SimpleListSubscription(keyPressedListeners, listener);
     }
 
     @Override
     public Subscription onKeyReleased(IKeyListener listener) {
         keyReleasedListeners.add(listener);
-        return new SubscriptionImpl(keyReleasedListeners, listener);
+        return new SimpleListSubscription(keyReleasedListeners, listener);
     }
 }

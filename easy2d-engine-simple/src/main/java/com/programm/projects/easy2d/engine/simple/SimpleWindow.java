@@ -6,8 +6,30 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
+import java.util.ArrayList;
+import java.util.List;
 
 class SimpleWindow extends WindowAdapter implements IWindow {
+
+    private class SimpleWindowListener implements ComponentListener {
+        private final List<IWindowResizeListener> windowResizeListeners = new ArrayList<>();
+
+        @Override
+        public void componentResized(ComponentEvent e) {
+            for(int i=0;i<windowResizeListeners.size();i++){
+                windowResizeListeners.get(i).resized(SimpleWindow.this, width(), height());
+            }
+        }
+
+        @Override
+        public void componentMoved(ComponentEvent e) {}
+
+        @Override
+        public void componentShown(ComponentEvent e) {}
+
+        @Override
+        public void componentHidden(ComponentEvent e) {}
+    }
 
     private final JFrame frame;
     private final Canvas canvas;
@@ -17,6 +39,7 @@ class SimpleWindow extends WindowAdapter implements IWindow {
     private boolean closeRequested;
 
     private final GraphicsPencil pencil;
+    private final SimpleWindowListener windowListener = new SimpleWindowListener();
 
     public SimpleWindow(String title, int width, int height){
         this.frame = new JFrame(title);
@@ -51,6 +74,8 @@ class SimpleWindow extends WindowAdapter implements IWindow {
         this.canvas.addMouseListener((MouseListener) mouse);
         this.canvas.addMouseMotionListener((MouseMotionListener) mouse);
         this.canvas.addMouseWheelListener((MouseWheelListener)mouse);
+
+        this.frame.addComponentListener(windowListener);
     }
 
     @Override
@@ -67,6 +92,7 @@ class SimpleWindow extends WindowAdapter implements IWindow {
 
         engine.render(pencil);
 
+
         g.dispose();
         bs.show();
     }
@@ -78,6 +104,8 @@ class SimpleWindow extends WindowAdapter implements IWindow {
 
     @Override
     public void show(){
+        //Call for initial resize event
+        windowListener.componentResized(null);
         this.frame.setVisible(true);
     }
 
@@ -97,8 +125,36 @@ class SimpleWindow extends WindowAdapter implements IWindow {
     }
 
     @Override
+    public void moveToScreen(int screen) {
+        WindowUtils.moveWindowToScreen(this, screen);
+    }
+
+    @Override
     public boolean isCloseRequested() {
         return closeRequested;
+    }
+
+
+    @Override
+    public int x() {
+        return frame.getLocationOnScreen().x;
+    }
+
+    @Override
+    public IWindow x(int x) {
+        frame.setLocation(x, y());
+        return this;
+    }
+
+    @Override
+    public int y() {
+        return frame.getLocationOnScreen().y;
+    }
+
+    @Override
+    public IWindow y(int y) {
+        frame.setLocation(x(), y);
+        return this;
     }
 
     @Override
@@ -107,7 +163,37 @@ class SimpleWindow extends WindowAdapter implements IWindow {
     }
 
     @Override
+    public IWindow width(int width) {
+        frame.setSize(width, height());
+        return this;
+    }
+
+    @Override
     public int height() {
         return canvas.getHeight();
+    }
+
+    @Override
+    public IWindow height(int height) {
+        frame.setSize(width(), height);
+        return this;
+    }
+
+    @Override
+    public IWindow position(int x, int y) {
+        frame.setLocation(x, y);
+        return this;
+    }
+
+    @Override
+    public IWindow size(int width, int height) {
+        frame.setSize(width, height);
+        return this;
+    }
+
+    @Override
+    public Subscription onWindowResized(IWindowResizeListener listener) {
+        windowListener.windowResizeListeners.add(listener);
+        return new SimpleListSubscription(windowListener.windowResizeListeners, listener);
     }
 }

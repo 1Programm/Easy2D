@@ -67,6 +67,7 @@ public class Checkbox extends WaveComponent {
 
     @Override
     public void onMousePressed(IBounds bounds, IMouse mouse, int button) {
+        if(disabled().get()) return;
         if(button == MouseEvent.BUTTON1) {
             if(bounds.inside(mouse.x(), mouse.y())) {
                 checked.invert();

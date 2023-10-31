@@ -40,22 +40,31 @@ public class ValueBounds implements IEditableBounds {
     }
 
     @Override
-    public void x(float x) {
+    public ValueBounds x(float x) {
         this.x = x;
+        return this;
     }
 
     @Override
-    public void y(float y) {
+    public ValueBounds y(float y) {
         this.y = y;
+        return this;
     }
 
     @Override
-    public void width(float width) {
+    public ValueBounds width(float width) {
         this.width = width;
+        return this;
     }
 
     @Override
-    public void height(float height) {
+    public ValueBounds height(float height) {
         this.height = height;
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return "[" + x + ", " + y + ", " + width + ", " + height + "]";
     }
 }

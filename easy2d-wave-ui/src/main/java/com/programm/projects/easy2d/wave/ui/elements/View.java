@@ -1,6 +1,7 @@
 package com.programm.projects.easy2d.wave.ui.elements;
 
 import com.programm.libraries.reactiveproperties.NotifyListener;
+import com.programm.libraries.reactiveproperties.core.FloatProperty;
 import com.programm.project.easy2d.engine.api.IKeyboard;
 import com.programm.project.easy2d.engine.api.IMouse;
 import com.programm.project.easy2d.engine.api.IPencil;
@@ -8,6 +9,7 @@ import com.programm.projects.easy2d.wave.ui.core.*;
 import com.programm.projects.easy2d.wave.ui.core.bounds.IBounds;
 import com.programm.projects.easy2d.wave.ui.core.bounds.IEditableBounds;
 import com.programm.projects.easy2d.wave.ui.core.bounds.ValueBounds;
+import com.programm.projects.easy2d.wave.ui.core.reactive.UIFloatProperty;
 import com.programm.projects.easy2d.wave.ui.core.utils.GFXUtils;
 import com.programm.projects.easy2d.wave.ui.elements.layout.ILayout;
 import com.programm.projects.easy2d.wave.ui.elements.layout.InheritLayout;
@@ -39,13 +41,26 @@ public class View extends WaveComponent {
 
     static {
         GlobalWaveDefaults.setBaseDefault(View.class, "renderer", new DefaultViewRenderer());
-        GlobalWaveDefaults.setBaseDefault(View.class, "primary", null);
-        GlobalWaveDefaults.setBaseDefault(View.class, "secondary", null);
-        GlobalWaveDefaults.setBaseDefault(View.class, "disabledColor", null);
+//        GlobalWaveDefaults.setBaseDefault(View.class, "primary", null);
+//        GlobalWaveDefaults.setBaseDefault(View.class, "secondary", null);
+//        GlobalWaveDefaults.setBaseDefault(View.class, "disabledColor", null);
+        GlobalWaveDefaults.setRootBaseDefault(View.class, "primary", null);
+        GlobalWaveDefaults.setRootBaseDefault(View.class, "secondary", null);
+        GlobalWaveDefaults.setRootBaseDefault(View.class, "disabledColor", null);
         GlobalWaveDefaults.setBaseDefault(View.class, "layout", new InheritLayout());
+
+        GlobalWaveDefaults.setBaseDefault(View.class, "marginTop", 0f);
+        GlobalWaveDefaults.setBaseDefault(View.class, "marginLeft", 0f);
+        GlobalWaveDefaults.setBaseDefault(View.class, "marginBottom", 0f);
+        GlobalWaveDefaults.setBaseDefault(View.class, "marginRight", 0f);
     }
 
     private final NotifyListener recalcListener = this::requestRecalculate;
+    private final IEditableBounds boundsWithMargin = new ValueBounds();
+    protected final UIFloatProperty marginTop = new UIFloatProperty(getClass(), "marginTop");
+    protected final UIFloatProperty marginLeft = new UIFloatProperty(getClass(), "marginLeft");
+    protected final UIFloatProperty marginBottom = new UIFloatProperty(getClass(), "marginBottom");
+    protected final UIFloatProperty marginRight = new UIFloatProperty(getClass(), "marginRight");
 
     protected final List<WaveComponent> children = new ArrayList<>();
     protected final List<Object> childArgsList = new ArrayList<>();
@@ -53,6 +68,7 @@ public class View extends WaveComponent {
     protected ILayout layout;
 
     private Float minWidth, minHeight;
+
 
     public View(ILayout layout) {
         this.layout = layout;
@@ -62,11 +78,13 @@ public class View extends WaveComponent {
 
     @Override
     public void render(IBounds bounds, IPencil pen, boolean forceRedraw) {
+        updateBoundsWithMargin(bounds);
+
         if(forceRedraw || GlobalComponentUtils.isDirty(this)) {
             GlobalComponentUtils.setDirty(this, false);
             renderSelf(bounds, pen);
             if(layout != null) {
-                layout.updateBoundsForChildren(pen, bounds, children, childArgsList, childBoundsList);
+                layout.updateBoundsForChildren(pen, boundsWithMargin, children, childArgsList, childBoundsList);
             }
 
             for(int i=0;i<children.size();i++){
@@ -105,6 +123,18 @@ public class View extends WaveComponent {
         }
     }
 
+    private void updateBoundsWithMargin(IBounds bounds){
+        float left = bounds.x() + marginLeft.get();
+        float right = bounds.x() + bounds.width() - marginRight.get();
+        if(right < left) right = left;
+
+        float top = bounds.y() + marginTop.get();
+        float bottom = bounds.y() + bounds.height() - marginBottom.get();
+        if(bottom < top) bottom = top;
+
+        boundsWithMargin.bounds(left, top, right - left, bottom - top);
+    }
+
     @SuppressWarnings({"unchecked", "rawtypes"})
     protected void renderSelf(IBounds bounds, IPencil pen){
         IWaveComponentRenderer renderer = GlobalLookAndFeel.getRendererForComponent(this);
@@ -114,7 +144,8 @@ public class View extends WaveComponent {
     @Override
     public Float minWidth(IPencil pen) {
         if(layout != null && minWidth == null){
-            minWidth = layout.minWidth(pen, children, childArgsList);
+            float horizontalMargin = marginLeft.get() + marginRight.get();
+            minWidth = layout.minWidth(pen, children, childArgsList) + horizontalMargin;
         }
 
         return minWidth;
@@ -123,7 +154,8 @@ public class View extends WaveComponent {
     @Override
     public Float minHeight(IPencil pen) {
         if(layout != null && minHeight == null){
-            minHeight = layout.minHeight(pen, children, childArgsList);
+            float verticalMargin = marginTop.get() + marginBottom.get();
+            minHeight = layout.minHeight(pen, children, childArgsList) + verticalMargin;
         }
 
         return minHeight;
@@ -131,36 +163,43 @@ public class View extends WaveComponent {
 
     @Override
     public void onMousePressed(IBounds bounds, IMouse mouse, int button) {
+        if(disabled().get()) return;
         callForAll((child, childBounds) -> child.onMousePressed(childBounds, mouse, button));
     }
 
     @Override
     public void onMouseReleased(IBounds bounds, IMouse mouse, int button) {
+        if(disabled().get()) return;
         callForAll((child, childBounds) -> child.onMouseReleased(childBounds, mouse, button));
     }
 
     @Override
     public void onMouseMoved(IBounds bounds, IMouse mouse) {
+        if(disabled().get()) return;
         callForAll((child, childBounds) -> child.onMouseMoved(childBounds, mouse));
     }
 
     @Override
     public void onMouseDragged(IBounds bounds, IMouse mouse, int button) {
+        if(disabled().get()) return;
         callForAll((child, childBounds) -> child.onMouseDragged(childBounds, mouse, button));
     }
 
     @Override
     public void onMouseScrolled(IBounds bounds, IMouse mouse, float scrollX, float scrollY) {
+        if(disabled().get()) return;
         callForAll((child, childBounds) -> child.onMouseScrolled(childBounds, mouse, scrollX, scrollY));
     }
 
     @Override
     public void onKeyPressed(IBounds bounds, IKeyboard keyboard, int key) {
+        if(disabled().get()) return;
         callForAll((child, childBounds) -> child.onKeyPressed(childBounds, keyboard, key));
     }
 
     @Override
     public void onKeyReleased(IBounds bounds, IKeyboard keyboard, int key) {
+        if(disabled().get()) return;
         callForAll((child, childBounds) -> child.onKeyReleased(childBounds, keyboard, key));
     }
 
@@ -221,4 +260,28 @@ public class View extends WaveComponent {
         minWidth = null;
         minHeight = null;
     }
+
+    public void margin(float top, float left, float bottom, float right){
+        marginTop.set(top);
+        marginLeft.set(left);
+        marginBottom.set(bottom);
+        marginRight.set(right);
+    }
+
+    public FloatProperty marginTop(){
+        return marginTop;
+    }
+
+    public FloatProperty marginLeft(){
+        return marginLeft;
+    }
+
+    public FloatProperty marginBottom(){
+        return marginBottom;
+    }
+
+    public FloatProperty marginRight(){
+        return marginRight;
+    }
+
 }

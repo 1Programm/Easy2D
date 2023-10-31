@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>easy2d-wave-ui</artifactId>
-    <version>0.3.0</version>
+    <version>0.3.6</version>
 
     <properties>
         <maven.compiler.source>16</maven.compiler.source>
@@ -21,12 +21,12 @@
         <dependency>
             <groupId>com.programm.projects</groupId>
             <artifactId>easy2d-engine-api</artifactId>
-            <version>0.7.0</version>
+            <version>0.8.0</version>
         </dependency>
         <dependency>
             <groupId>com.programm.libraries</groupId>
             <artifactId>reactiveproperties</artifactId>
-            <version>0.7.0</version>
+            <version>0.7.3</version>
         </dependency>
     </dependencies>
 

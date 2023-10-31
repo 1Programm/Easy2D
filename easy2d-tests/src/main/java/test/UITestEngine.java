@@ -10,7 +10,7 @@ public class UITestEngine extends SimpleEngine {
 
     public static final String TITLE = "UI TEST";
     public static final int WIDTH = 600, HEIGHT = 500;
-    public static final int FPS = 30;
+    public static final int FPS = 60;
 
     private final WaveRoot uiRoot;
     private final View view;

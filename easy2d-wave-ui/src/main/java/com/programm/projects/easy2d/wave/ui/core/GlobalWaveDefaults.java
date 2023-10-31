@@ -34,6 +34,18 @@ public class GlobalWaveDefaults {
         setDefault(cls, name, defaultValue, 0);
     }
 
+    public static void setRootBaseDefault(Class<?> cls, String name, Object defaultValue, int level){
+        Class<?> superCls = cls.getSuperclass();
+        if(superCls != null && WaveComponent.class.isAssignableFrom(superCls)){
+            setRootBaseDefault(superCls, name, defaultValue, level);
+        }
+
+        setDefault(cls, name, defaultValue, level);
+    }
+
+    public static void setRootBaseDefault(Class<?> cls, String name, Object defaultValue){
+        setRootBaseDefault(cls, name, defaultValue, 0);
+    }
 
 
     @SuppressWarnings("unchecked")

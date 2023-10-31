@@ -34,4 +34,9 @@ public class ConstantBounds implements IBounds {
     public float height() {
         return height;
     }
+
+    @Override
+    public String toString() {
+        return "[" + x + ", " + y + ", " + width + ", " + height + "]";
+    }
 }

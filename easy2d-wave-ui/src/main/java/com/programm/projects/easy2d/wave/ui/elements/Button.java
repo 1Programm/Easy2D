@@ -1,6 +1,7 @@
 package com.programm.projects.easy2d.wave.ui.elements;
 
-import com.programm.libraries.reactiveproperties.core.*;
+import com.programm.libraries.reactiveproperties.core.BoolObservable;
+import com.programm.libraries.reactiveproperties.core.ObjectProperty;
 import com.programm.project.easy2d.engine.api.IMouse;
 import com.programm.project.easy2d.engine.api.IPencil;
 import com.programm.projects.easy2d.wave.ui.core.GlobalWaveDefaults;
@@ -42,7 +43,7 @@ public class Button extends Label {
         GlobalWaveDefaults.setBaseDefault(Button.class, "secondary", Color.WHITE);
         GlobalWaveDefaults.setBaseDefault(Button.class, "disabledColor", Color.LIGHT_GRAY);
         GlobalWaveDefaults.setBaseDefault(Button.class, "pressedColor", Color.LIGHT_GRAY);
-        GlobalWaveDefaults.setBaseDefault(Button.class, "hoverColor", new Color(220, 220, 220));
+        GlobalWaveDefaults.setBaseDefault(Button.class, "hoveredColor", new Color(220, 220, 220));
         GlobalWaveDefaults.setBaseDefault(Button.class, "pressed", false);
         GlobalWaveDefaults.setBaseDefault(Button.class, "hovered", false);
     }
@@ -66,6 +67,7 @@ public class Button extends Label {
 
     @Override
     public void onMousePressed(IBounds bounds, IMouse mouse, int button) {
+        if(disabled().get()) return;
         if(button == MouseEvent.BUTTON1) {
             if(bounds.inside(mouse.x(), mouse.y())) {
                 pressed.set(true);
@@ -76,6 +78,7 @@ public class Button extends Label {
 
     @Override
     public void onMouseReleased(IBounds bounds, IMouse mouse, int button) {
+        if(disabled().get()) return;
         if(button == MouseEvent.BUTTON1) {
             if(pressed.get()) {
                 pressed.set(false);
@@ -86,6 +89,7 @@ public class Button extends Label {
 
     @Override
     public void onMouseMoved(IBounds bounds, IMouse mouse) {
+        if(disabled().get()) return;
         if(bounds.inside(mouse.x(), mouse.y())){
             if(!hovered.get()) {
                 hovered.set(true);

@@ -93,10 +93,11 @@ public abstract class WaveComponent implements IEditableBounds, IWaveComponent {
     }
 
     @Override
-    public void x(float x){
+    public WaveComponent x(float x){
         this.x = x;
         this.xUntouched = false;
         requestRedraw();
+        return this;
     }
 
     @Override
@@ -105,19 +106,21 @@ public abstract class WaveComponent implements IEditableBounds, IWaveComponent {
     }
 
     @Override
-    public void y(float y){
+    public WaveComponent y(float y){
         this.y = y;
         this.yUntouched = false;
         requestRedraw();
+        return this;
     }
 
     @Override
-    public void position(float x, float y){
+    public WaveComponent position(float x, float y){
         this.x = x;
         this.y = y;
         this.xUntouched = false;
         this.yUntouched = false;
         requestRedraw();
+        return this;
     }
 
     @Override
@@ -126,10 +129,11 @@ public abstract class WaveComponent implements IEditableBounds, IWaveComponent {
     }
 
     @Override
-    public void width(float width){
+    public WaveComponent width(float width){
         this.width = width;
         this.widthUntouched = false;
         requestRedraw();
+        return this;
     }
 
     @Override
@@ -138,23 +142,25 @@ public abstract class WaveComponent implements IEditableBounds, IWaveComponent {
     }
 
     @Override
-    public void height(float height){
+    public WaveComponent height(float height){
         this.height = height;
         this.heightUntouched = false;
         requestRedraw();
+        return this;
     }
 
     @Override
-    public void size(float width, float height){
+    public WaveComponent size(float width, float height){
         this.width = width;
         this.height = height;
         this.widthUntouched = false;
         this.heightUntouched = false;
         requestRedraw();
+        return this;
     }
 
     @Override
-    public void bounds(float x, float y, float width, float height){
+    public WaveComponent bounds(float x, float y, float width, float height){
         this.x = x;
         this.y = y;
         this.width = width;
@@ -164,11 +170,12 @@ public abstract class WaveComponent implements IEditableBounds, IWaveComponent {
         this.widthUntouched = false;
         this.heightUntouched = false;
         requestRedraw();
+        return this;
     }
 
     @Override
-    public void bounds(IBounds bounds) {
-        bounds(bounds.x(), bounds.y(), bounds.width(), bounds.height());
+    public WaveComponent bounds(IBounds bounds) {
+        return bounds(bounds.x(), bounds.y(), bounds.width(), bounds.height());
     }
 
     @Override
@@ -196,48 +203,4 @@ public abstract class WaveComponent implements IEditableBounds, IWaveComponent {
         return disabled;
     }
 
-    //    public void primary(Color primary){
-//        this.primary = primary;
-//        requestRedraw();
-//    }
-//
-//    public Color primary(){
-//        return primary;
-//    }
-//
-//    public void secondary(Color secondary){
-//        this.secondary = secondary;
-//        requestRedraw();
-//    }
-//
-//    public Color secondary(){
-//        return secondary;
-//    }
-//
-//    public void disabledColor(Color disabledColor){
-//        this.disabledColor = disabledColor;
-//        requestRedraw();
-//    }
-//
-//    public Color disabledColor(){
-//        return disabledColor;
-//    }
-//
-//    public void visible(boolean visible){
-//        this.visible = visible;
-//        requestRecalculate();
-//    }
-//
-//    public boolean visible(){
-//        return visible;
-//    }
-//
-//    public void disabled(boolean disabled){
-//        this.disabled = disabled;
-//        requestRedraw();
-//    }
-//
-//    public boolean disabled(){
-//        return disabled;
-//    }
 }

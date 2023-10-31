@@ -26,32 +26,36 @@ public abstract class AbstractPolicyLayout implements ILayout {
         this.verticalAlign = verticalAlign;
     }
 
-    public void horizontalPolicy(int horizontalPolicy){
+    public AbstractPolicyLayout horizontalPolicy(int horizontalPolicy){
         this.horizontalPolicy = horizontalPolicy;
+        return this;
     }
 
     public int horizontalPolicy(){
         return horizontalPolicy;
     }
 
-    public void verticalPolicy(int verticalPolicy){
+    public AbstractPolicyLayout verticalPolicy(int verticalPolicy){
         this.verticalPolicy = verticalPolicy;
+        return this;
     }
 
     public int verticalPolicy(){
         return verticalPolicy;
     }
 
-    public void horizontalAlign(int horizontalAlign){
+    public AbstractPolicyLayout horizontalAlign(int horizontalAlign){
         this.horizontalAlign = horizontalAlign;
+        return this;
     }
 
     public int horizontalAlign(){
         return horizontalAlign;
     }
 
-    public void verticalAlign(int verticalAlign){
+    public AbstractPolicyLayout verticalAlign(int verticalAlign){
         this.verticalAlign = verticalAlign;
+        return this;
     }
 
     public int verticalAlign(){

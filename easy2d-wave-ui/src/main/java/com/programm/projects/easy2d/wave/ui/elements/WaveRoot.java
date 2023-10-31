@@ -1,5 +1,7 @@
 package com.programm.projects.easy2d.wave.ui.elements;
 
+import com.programm.libraries.reactiveproperties.ObservableNotifier;
+import com.programm.libraries.reactiveproperties.core.BoolProperty;
 import com.programm.project.easy2d.engine.api.*;
 import com.programm.projects.easy2d.wave.ui.core.GlobalComponentUtils;
 import com.programm.projects.easy2d.wave.ui.core.bounds.ValueBounds;
@@ -8,6 +10,7 @@ public class WaveRoot {
 
     private final IContext context;
     private final ValueBounds windowBounds = new ValueBounds();
+    private final ObservableNotifier windowBoundsChangeNotifier = new ObservableNotifier();
     private View contentView;
 
     public WaveRoot(IContext context, View contentView) {
@@ -22,6 +25,13 @@ public class WaveRoot {
 
         context.keyboard().onKeyPressed(this::onKeyPressed);
         context.keyboard().onKeyReleased(this::onKeyReleased);
+
+        context.window().onWindowResized(this::onWindowResized);
+
+
+        this.windowBoundsChangeNotifier
+                .fDebounce(50)
+                .listen(this::contentViewRecalculate);
     }
 
     public WaveRoot(IContext context) {
@@ -29,9 +39,16 @@ public class WaveRoot {
     }
 
     public void render(IPencil pen){
-        windowBounds.bounds(0, 0, context.window().width(), context.window().height());
         if(contentView != null){
-            contentView.render(windowBounds, pen, GlobalComponentUtils.shouldRecalculate(contentView).get());
+            BoolProperty shouldRecalculate = GlobalComponentUtils.shouldRecalculate(contentView);
+
+            if(shouldRecalculate.get()){
+                contentView.render(windowBounds, pen, true);
+                shouldRecalculate.set(false);
+            }
+            else {
+                contentView.render(windowBounds, pen, false);
+            }
         }
     }
 
@@ -61,6 +78,15 @@ public class WaveRoot {
 
     private void onKeyReleased(IKeyboard keyboard, int key) {
         if(contentView != null) contentView.onKeyReleased(windowBounds, keyboard, key);
+    }
+
+    private void onWindowResized(IWindow window, int width, int height){
+        windowBounds.bounds(0, 0, width, height);
+        windowBoundsChangeNotifier.call();
+    }
+
+    private void contentViewRecalculate() {
+        GlobalComponentUtils.shouldRecalculate(contentView).set(true);
     }
 
     public void setContentView(View contentView) {

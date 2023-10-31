@@ -1,6 +1,7 @@
 package com.programm.projects.easy2d.wave.ui.elements.layout;
 
 import com.programm.project.easy2d.engine.api.IPencil;
+import com.programm.projects.easy2d.wave.ui.core.GlobalComponentUtils;
 import com.programm.projects.easy2d.wave.ui.core.WaveComponent;
 import com.programm.projects.easy2d.wave.ui.core.bounds.IBounds;
 import com.programm.projects.easy2d.wave.ui.core.bounds.IEditableBounds;
@@ -240,7 +241,7 @@ public class GridLayout implements ILayout {
 
             if(y == col){
                 WaveComponent child = children.get(i);
-                Float childMinHeight = child.minHeight(pen);
+                Float childMinHeight = GlobalComponentUtils.getHeightOrMinHeight(pen, child);//child.minHeight(pen);
                 if(childMinHeight != null) {
                     maxMinHeight = Math.max(maxMinHeight, childMinHeight);
                 }
@@ -283,7 +284,7 @@ public class GridLayout implements ILayout {
 
             if(x == row){
                 WaveComponent child = children.get(i);
-                Float childMinWidth = child.minWidth(pen);
+                Float childMinWidth = GlobalComponentUtils.getWidthOrMinWidth(pen, child);//child.minWidth(pen);
                 if(childMinWidth != null){
                     maxMinWidth = Math.max(maxMinWidth, childMinWidth);
                 }
@@ -346,7 +347,7 @@ public class GridLayout implements ILayout {
             int y = pos / gridWidth;
 
             WaveComponent child = children.get(i);
-            Float childMinWidth = child.minWidth(pen);
+            Float childMinWidth = GlobalComponentUtils.getWidthOrMinWidth(pen, child);//child.minWidth(pen);
             if(childMinWidth != null) {
                 allMinWidthPerRow[y] += childMinWidth;
             }
@@ -413,7 +414,7 @@ public class GridLayout implements ILayout {
             int x = pos % gridWidth;
 
             WaveComponent child = children.get(i);
-            Float childMinHeight = child.minHeight(pen);
+            Float childMinHeight = GlobalComponentUtils.getHeightOrMinHeight(pen, child);//child.minHeight(pen);
             if(childMinHeight != null) {
                 allMinHeightPerColumn[x] += childMinHeight;
             }

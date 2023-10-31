@@ -20,12 +20,12 @@
         <dependency>
             <groupId>com.programm.projects</groupId>
             <artifactId>easy2d-engine-simple</artifactId>
-            <version>0.6.0</version>
+            <version>0.6.1</version>
         </dependency>
         <dependency>
             <groupId>com.programm.projects</groupId>
             <artifactId>easy2d-wave-ui</artifactId>
-            <version>0.2.0</version>
+            <version>0.3.3</version>
         </dependency>
     </dependencies>
 
